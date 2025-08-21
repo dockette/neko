@@ -1,0 +1,22 @@
+services:
+  neko:
+    image: ${DOCKER_CHROMIUM_IMAGE}
+    restart: "unless-stopped"
+    shm_size: "2gb"
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "8080:8080"
+      - "9223:9223"
+      - "56000-56100:56000-56100/udp"
+    volumes:
+      - ".docker/chrome:/home/neko/.config/chromium"
+    environment:
+      NEKO_DESKTOP_SCREEN: 1920x1080@30
+      NEKO_MEMBER_MULTIUSER_USER_PASSWORD: neko
+      NEKO_MEMBER_MULTIUSER_ADMIN_PASSWORD: admin
+      NEKO_WEBRTC_EPR: 56000-56100
+      NEKO_WEBRTC_NAT1TO1: 127.0.0.1
+      NEKO_WEBRTC_ICELITE: 1
+      NEKO_DESKTOP_UNMINIMIZE: true
+      NEKO_DESKTOP_UPLOAD_DROP: true

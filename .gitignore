@@ -1,0 +1,8 @@
+# Envs
+.env
+
+# Project
+.tmp
+
+# Docker
+.docker
