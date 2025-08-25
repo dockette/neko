@@ -30,9 +30,11 @@ docker compose up
 
 ![](.docs/neko.png)
 
-4. Write your own script to use Chrome DevTools Protocol.
+4. Use Chrome DevTools Protocol on `http://localhost:19222`.
 
-5. Profit.
+5. Use Playwright MCP on `http://localhost:8931`.
+
+6. Profit.
 
 ## Development
 
