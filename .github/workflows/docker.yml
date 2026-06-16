@@ -1,0 +1,49 @@
+name: Docker
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate compose config
+        run: make test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate compose build baseline
+        run: make build
+
+  docs:
+    name: Docs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate docs
+        run: |
+          test -f README.md
+          test -f docker-compose.yml
+          test "$(cat CLAUDE.md)" = "@AGENTS.md"
+          ! grep -Eiq 'slack|join\.slack|gitter|badgen\.net' README.md

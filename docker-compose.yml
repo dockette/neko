@@ -1,6 +1,6 @@
 services:
     neko:
-        image: ${DOCKER_CHROMIUM_IMAGE}
+        image: ${DOCKER_CHROMIUM_IMAGE:-dockette/neko:chromium}
         restart: "unless-stopped"
         shm_size: "2gb"
         cap_add:
