@@ -43,15 +43,37 @@ docker compose up
 
 6. Profit.
 
-## Development
+## Versions
 
-This repository is a Compose wrapper. CI validates the Compose configuration and does not clone or build upstream Neko.
+Tags on [Docker Hub](https://hub.docker.com/r/dockette/neko):
+
+- `chromium` - the latest build
+- `chromium-YYYY.MM.DD` - the build released on that date (for example `chromium-2026.11.09`)
+
+There is no `latest` tag. Every build is published as a [GitHub release](https://github.com/dockette/neko/releases) named after its date.
+
+The image is built from [`holyfork/m1k1o-neko`](https://github.com/holyfork/m1k1o-neko) commit `7704fcc41399506fe91274b14e6473e100a949e9`, pinned by `NEKO_REF` in [`VERSION`](./VERSION). The fork is based on upstream n.eko `master` after `v3.2.0` (Debian 13 images), plus 9 fork commits (Chrome DevTools Protocol, chrome-mcp and playwright-mcp).
+
+To run a fixed build, set the image in your environment:
 
 ```bash
-make test
-make build
-make run
+DOCKER_CHROMIUM_IMAGE=dockette/neko:chromium-2026.11.09 docker compose up
 ```
+
+## Development
+
+CI clones the pinned fork commit, builds the image for `linux/amd64`, smoke tests it and, on `master`, pushes both tags and creates the release.
+
+```bash
+make test             # validate docker-compose.yml
+make build-chromium   # fetch the pinned NEKO_REF and build the image (slow)
+make test-docker      # check that Chromium runs in the image
+make run              # start the stack
+make version          # print VERSION
+make release          # set VERSION to today (UTC)
+```
+
+To update Neko, put a new full commit sha into `NEKO_REF` in `VERSION` and run `make release`.
 
 ## Maintenance
 
